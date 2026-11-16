@@ -1,0 +1,7 @@
+flowchart TD
+    RAW[Raw validated records] --> CLEAN[Clean: handle missing values (drop/impute)]
+    CLEAN --> NUM[Normalize numeric features (zero-mean/unit-variance or min-max)]
+    NUM --> CAT[Encode categorical features (protocol, flags, service)]
+    CAT --> SPLIT[Train/validation/test split (fixed random seed)]
+    SPLIT --> FM[Feature matrix + label vector]
+    FM --> ART[Persist feature artifacts to artifacts/]

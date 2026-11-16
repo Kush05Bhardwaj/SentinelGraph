@@ -1,0 +1,23 @@
+flowchart TD
+    subgraph Sources["Supported Dataset Sources (read-only, never committed)"]
+        CIC17[CIC-IDS2017 CSV]
+        CIC18[CSE-CIC-IDS2018 CSV]
+        UNSW[UNSW-NB15 CSV]
+    end
+
+    subgraph Ingestion["Ingestion Module — ml/preprocessing/ingestion.py"]
+        VALIDATE[Validate schema per source]
+        NORMALIZE_COLS[Normalize column names]
+        BATCH[Create ingest batch]
+        META[Record batch metadata: source, path, timestamp]
+    end
+
+    subgraph Store["Raw Store — data/raw/ (gitignored)"]
+        RAW[Validated raw records]
+    end
+
+    Sources --> VALIDATE
+    VALIDATE --> NORMALIZE_COLS
+    NORMALIZE_COLS --> BATCH
+    BATCH --> META
+    META --> RAW
