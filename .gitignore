@@ -67,6 +67,7 @@ Thumbs.db
 # Notebooks
 .ipynb_checkpoints/
 *.ipynb
+!notebooks/*.ipynb
 
 # Data / models / artifacts (never commit datasets, checkpoints, weights)
 data/raw/
