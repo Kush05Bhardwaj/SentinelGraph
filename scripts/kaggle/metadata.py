@@ -18,20 +18,24 @@ DEFAULT_OUTPUT_DIR = "/kaggle/working"
 
 @dataclass
 class ExperimentMetadata:
-    """Complete metadata for a training experiment."""
+    """Complete metadata for a training experiment.
+
+    Schema fields match docs/experiment-standards.md Section 1.1.
+    """
 
     experiment_id: str
-    run_name: str
-    source_dataset: Optional[str]
-    model_architecture: Optional[str]
-    task: Optional[str]
+    model_name: Optional[str] = None
+    model_version: Optional[str] = None
+    dataset_name: Optional[str] = None
+    dataset_version: Optional[str] = None
+    feature_schema_version: Optional[str] = None
+    random_seed: Optional[int] = None
     hyperparameters: Dict[str, Any] = field(default_factory=dict)
-    environment: Dict[str, Any] = field(default_factory=dict)
+    training_environment: Optional[str] = None
+    framework_versions: Dict[str, Any] = field(default_factory=dict)
     metrics: Dict[str, Any] = field(default_factory=dict)
-    checkpoint_ids: list = field(default_factory=list)
     artifact_paths: list = field(default_factory=list)
-    started_at: str = field(default_factory=lambda: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
-    finished_at: Optional[str] = None
+    timestamp: str = field(default_factory=lambda: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
     status: str = "running"
     notes: Optional[str] = None
 
@@ -62,9 +66,9 @@ def export_metadata(
     path = os.path.join(output_dir, filename)
 
     data = asdict(metadata)
-    # Normalize finished_at/status if not set
-    if data["finished_at"] is None:
-        data["finished_at"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    # Normalize timestamp if not set
+    if not data["timestamp"]:
+        data["timestamp"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
@@ -78,17 +82,18 @@ def load_metadata(path: str) -> ExperimentMetadata:
         data = json.load(f)
     return ExperimentMetadata(
         experiment_id=data["experiment_id"],
-        run_name=data["run_name"],
-        source_dataset=data.get("source_dataset"),
-        model_architecture=data.get("model_architecture"),
-        task=data.get("task"),
+        model_name=data.get("model_name"),
+        model_version=data.get("model_version"),
+        dataset_name=data.get("dataset_name"),
+        dataset_version=data.get("dataset_version"),
+        feature_schema_version=data.get("feature_schema_version"),
+        random_seed=data.get("random_seed"),
         hyperparameters=data.get("hyperparameters", {}),
-        environment=data.get("environment", {}),
+        training_environment=data.get("training_environment"),
+        framework_versions=data.get("framework_versions", {}),
         metrics=data.get("metrics", {}),
-        checkpoint_ids=data.get("checkpoint_ids", []),
         artifact_paths=data.get("artifact_paths", []),
-        started_at=data.get("started_at", ""),
-        finished_at=data.get("finished_at"),
+        timestamp=data.get("timestamp", ""),
         status=data.get("status", "running"),
         notes=data.get("notes"),
     )
@@ -104,7 +109,7 @@ def finalize_experiment(
 
     Convenience wrapper: sets finished_at and status, then exports.
     """
-    metadata.finished_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    metadata.timestamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     metadata.status = status
     return export_metadata(metadata, output_dir=output_dir, filename=filename)
 
