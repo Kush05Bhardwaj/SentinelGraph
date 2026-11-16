@@ -1,0 +1,5 @@
+flowchart TD
+    PRED[Predictions] --> GROUP[Group by shared IP + time window + attack family]
+    GROUP --> INC[Incident]
+    INC --> RISK[Risk score in [0, 100], deterministic formula]
+    RISK --> PERSIST[Persist incident: ID, start/end time, entities, score, linked predictions]

@@ -1,0 +1,7 @@
+flowchart TD
+    FLOW[Flow records] --> NODES[Extract nodes: unique IP addresses]
+    FLOW --> EDGES[Extract edges: src IP → dst IP per flow (directed)]
+    NODES --> NF[Node features: aggregated flow statistics per IP]
+    EDGES --> EF[Edge features: per-flow features]
+    NF & EF --> GRAPH[Graph object: nodes = IPs, edges = flows]
+    GRAPH --> GS[Persist graph to data/graphs/ (gitignored)]

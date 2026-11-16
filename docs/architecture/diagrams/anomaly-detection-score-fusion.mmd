@@ -1,0 +1,7 @@
+flowchart TD
+    FLOW[Flow record] --> ANOM[Anomaly model: reconstruction / density score]
+    ANOM --> ASCORE[Anomaly score]
+    SUP[Supervised classifier score] --> FUSE[Score fusion: weighted combination]
+    ASCORE --> FUSE
+    FUSE --> FINAL[Final threat score + anomaly flag]
+    FINAL --> OUT[Persist prediction + anomaly flag separately in schema]

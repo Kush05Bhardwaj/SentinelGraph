@@ -1,0 +1,6 @@
+flowchart TD
+    GH[Source code — GitHub] --> K[Kaggle training environment]
+    K --> TRAIN[Run training script offline]
+    TRAIN --> ART[Artifacts: model weights, metrics, explanations]
+    ART --> PAS[Persistent artifact storage — artifacts/]
+    PAS --> INF[Inference runtime — FastAPI loads model from artifacts/]

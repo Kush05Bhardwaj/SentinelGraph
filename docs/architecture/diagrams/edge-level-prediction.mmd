@@ -1,0 +1,5 @@
+flowchart TD
+    FLOW[Incoming flow record] --> EF[Extract edge features]
+    EF --> MODEL[Load trained edge classifier from artifacts/]
+    MODEL --> SCORE[Edge threat score in [0, 1] + label]
+    SCORE --> OUT[Edge prediction record linked to flow record + src/dst IPs]
