@@ -139,6 +139,7 @@ class PreprocessingTransformer:
         """
         df = self._copy_and_normalize_columns(df)
         label_column = label_column or self.config.label_column
+        self.config.label_column = label_column
 
         self._input_columns = list(df.columns)
         self._report = PreprocessingReport()
