@@ -1,0 +1,5 @@
+flowchart TD
+    PRED[Prediction (classical or GNN)] --> EXP[Explainer: SHAP or GNNExplainer]
+    EXP --> EA[Explanation artifact: feature importance / explanation subgraph]
+    EA --> LINK[Link to prediction ID, model version, input record]
+    LINK --> STORE[Persist explanation reference]

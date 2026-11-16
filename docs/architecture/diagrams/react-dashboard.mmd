@@ -1,0 +1,5 @@
+flowchart TD
+    USER[SOC analyst] --> DB[React dashboard]
+    DB --> API[FastAPI API: metrics, incidents, predictions, explanations]
+    API --> DB
+    DB --> USER[Views: attack distribution, predictions, anomaly scores, incidents, explanations]

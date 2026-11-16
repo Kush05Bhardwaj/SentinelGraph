@@ -1,0 +1,7 @@
+flowchart TD
+    GRAPH[Graph object] --> PYG[PyTorch Geometric Data object]
+    PYG --> SPLIT[Edge train/validation/test split (edge mask)]
+    SPLIT --> GNN[GNN edge classifier: GCN / GAT / GraphSAGE]
+    GNN --> METRICS[Edge-level metrics: precision, recall, F1, ROC-AUC]
+    METRICS --> ARTIFACT[GNN model artifact + metadata: run ID, hyperparameters, timestamp]
+    ARTIFACT --> AS[Persistent artifact storage — artifacts/]

@@ -1,0 +1,7 @@
+flowchart TD
+    CLIENT[Client request] --> API[FastAPI /predict endpoint]
+    API --> MODEL[Load model from artifacts/]
+    API --> EXP[Explainer]
+    MODEL --> RESP[JSON response: label, score, explanation]
+    EXP --> RESP
+    RESP --> CLIENT

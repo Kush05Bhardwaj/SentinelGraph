@@ -1,0 +1,6 @@
+flowchart TD
+    FM[Feature matrix + label vector] --> SPLIT[Split train/validation/test]
+    SPLIT --> TRAIN[Train classical models: Random Forest, Logistic Regression, XGBoost]
+    TRAIN --> METRICS[Compute metrics: precision, recall, F1, ROC-AUC, confusion matrix]
+    METRICS --> ARTIFACT[Model artifact + metadata: run ID, hyperparameters, timestamp]
+    ARTIFACT --> AS[Persistent artifact storage — artifacts/]
